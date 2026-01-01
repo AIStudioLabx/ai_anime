@@ -1,0 +1,36 @@
+{
+    "episode_id": 1,
+    "shots": [
+      {
+        "image": "assets/images/shot_1.png",
+        "duration": 9,
+        "subtitles": [
+          "你先坐那边。",
+          "这里不是你该来的地方。",
+          "待会儿领导来了，",
+          "别乱说话。"
+        ]
+      },
+      {
+        "image": "assets/images/shot_2.png",
+        "duration": 9,
+        "subtitles": [
+          "……",
+          "你刚才说的，",
+          "是哪位领导？"
+        ]
+      },
+      {
+        "image": "assets/images/shot_3.png",
+        "duration": 17,
+        "subtitles": [
+          "不过没关系。",
+          "反正，",
+          "他们都要听我的。",
+          "只是现在——",
+          "我想看看，",
+          "你打算怎么继续说。"
+        ]
+      }
+    ]
+  }
