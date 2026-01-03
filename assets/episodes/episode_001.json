@@ -1,0 +1,30 @@
+{
+  "episode_id": 1,
+  "seed": 123456,
+  "character": {
+    "fingerprint": "young man, slim body, short messy black hair, sharp eyes, pale skin, anime style"
+  },
+  "shots": [
+    {
+      "id": 1,
+      "scene": "modern office interior",
+      "emotion": "suppressed",
+      "framing": "medium",
+      "output": "assets/images/shot_1.png"
+    },
+    {
+      "id": 2,
+      "scene": "modern office interior",
+      "emotion": "cold",
+      "framing": "close",
+      "output": "assets/images/shot_2.png"
+    },
+    {
+      "id": 3,
+      "scene": "modern office interior",
+      "emotion": "confident",
+      "framing": "side",
+      "output": "assets/images/shot_3.png"
+    }
+  ]
+}

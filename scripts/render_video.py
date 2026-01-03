@@ -34,13 +34,14 @@ def render_video(images, durations, srt_path, output_path):
     subprocess.run(cmd, check=True)
 
 if __name__ == "__main__":
+    project_root = Path(__file__).parent.parent
     render_video(
         images=[
-            Path("../assets/images/shot_1.png"),
-            Path("../assets/images/shot_2.png"),
-            Path("../assets/images/shot_3.png"),
+            project_root / "assets" / "images" / "shot_1.png",
+            project_root / "assets" / "images" / "shot_2.png",
+            project_root / "assets" / "images" / "shot_3.png",
         ],
         durations=[9, 9, 17],
-        srt_path=Path("../output/episode_001.srt"),
-        output_path=Path("../output/episode_001.mp4")
+        srt_path=project_root / "output" / "episode_001.srt",
+        output_path=project_root / "output" / "episode_001.mp4"
     )

@@ -1,0 +1,21 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+
+# Packaging artifacts
+*.egg-info/
+
+# Virtual environments
+.venv/
+venv/
+
+# OS
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+
+# Generated outputs
+output/
+assets/images/*.png

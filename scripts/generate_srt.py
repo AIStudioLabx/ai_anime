@@ -34,7 +34,8 @@ def generate_srt(episode_json: Path, out_srt: Path):
     out_srt.write_text("\n".join(lines), encoding="utf-8")
 
 if __name__ == "__main__":
+    project_root = Path(__file__).parent.parent
     generate_srt(
-        Path("../episodes/episode_001.json"),
-        Path("../output/episode_001.srt")
+        project_root / "assets" / "episodes" / "episode_001.json",
+        project_root / "output" / "episode_001.srt"
     )

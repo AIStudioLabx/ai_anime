@@ -1,0 +1,69 @@
+{
+  "version": 1,
+  "state": {
+    "lastNodeId": 7,
+    "lastLinkId": 6,
+    "lastGroupId": 0,
+    "lastRerouteId": 0
+  },
+  "nodes": [],
+  "prompt": {
+    "1": {
+      "class_type": "CheckpointLoaderSimple",
+      "inputs": {
+        "ckpt_name": "counterfeitV30_v30.safetensors"
+      }
+    },
+    "2": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "text": "__PROMPT__",
+        "clip": ["1", 1]
+      }
+    },
+    "3": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "text": "low quality, bad anatomy, blurry, distorted face",
+        "clip": ["1", 1]
+      }
+    },
+    "4": {
+      "class_type": "EmptyLatentImage",
+      "inputs": {
+        "width": 720,
+        "height": 1280,
+        "batch_size": 1
+      }
+    },
+    "5": {
+      "class_type": "KSampler",
+      "inputs": {
+        "seed": "__SEED__",
+        "steps": 26,
+        "cfg": 7,
+        "sampler_name": "euler",
+        "scheduler": "normal",
+        "denoise": 1,
+        "model": ["1", 0],
+        "positive": ["2", 0],
+        "negative": ["3", 0],
+        "latent_image": ["4", 0]
+      }
+    },
+    "6": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": ["5", 0],
+        "vae": ["1", 2]
+      }
+    },
+    "7": {
+      "class_type": "SaveImage",
+      "inputs": {
+        "filename_prefix": "__OUTPUT__",
+        "images": ["6", 0]
+      }
+    }
+  }
+}
