@@ -1,6 +1,6 @@
 {
   "episode_id": 1,
-  "seed": 123456,
+  "seed": -1,
   "character": {
     "fingerprint": "young man, slim body, short messy black hair, sharp eyes, pale skin, anime style"
   },
@@ -10,21 +10,46 @@
       "scene": "modern office interior",
       "emotion": "suppressed",
       "framing": "medium",
-      "output": "assets/images/shot_1.png"
+      "output": "assets/images/shot_1.png",
+      "duration": 9,
+      "speaker": "female_young",
+      "subtitles": [
+        "你先坐那边。",
+        "这里不是你该来的地方。",
+        "待会儿领导来了，",
+        "别乱说话。"
+      ]
     },
     {
       "id": 2,
       "scene": "modern office interior",
       "emotion": "cold",
       "framing": "close",
-      "output": "assets/images/shot_2.png"
+      "output": "assets/images/shot_2.png",
+      "duration": 9,
+      "speaker": "male_young",
+      "subtitles": [
+        "……",
+        "你刚才说的，",
+        "是哪位领导？"
+      ]
     },
     {
       "id": 3,
       "scene": "modern office interior",
       "emotion": "confident",
       "framing": "side",
-      "output": "assets/images/shot_3.png"
+      "output": "assets/images/shot_3.png",
+      "duration": 17,
+      "speaker": "female_young",
+      "subtitles": [
+        "不过没关系。",
+        "反正，",
+        "他们都要听我的。",
+        "只是现在——",
+        "我想看看，",
+        "你打算怎么继续说。"
+      ]
     }
   ]
 }

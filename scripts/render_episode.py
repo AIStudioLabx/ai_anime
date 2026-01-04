@@ -58,8 +58,14 @@ if __name__ == "__main__":
             shot["output"],
         )
         prompt_id = client.submit(workflow)
-        images = client.wait_and_collect_images(
-            prompt_id,
-            target_dir="assets/images"
-        )
 
+        # 从 output 路径中提取文件名（如 "assets/images/shot_1.png" -> "shot_1.png"）
+        expected_filename = Path(shot["output"]).name
+
+        images = client.collect_and_cleanup(
+            prompt_id,
+            target_dir="assets/images",
+            expected_filename=expected_filename,
+        )
+        
+        print(f"✅ 生成完成: {shot['output']}")

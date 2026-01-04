@@ -1,5 +1,6 @@
 from typing import Dict, Any
 import copy
+from pathlib import Path
 
 
 def inject(
@@ -36,7 +37,9 @@ def inject(
 
         # 检查并替换 output（检查值而不是键）
         if inputs.get("filename_prefix") == "__OUTPUT__":
-            inputs["filename_prefix"] = output
+            # 移除扩展名，ComfyUI 会自动添加序号和扩展名
+            output_path = Path(output)
+            inputs["filename_prefix"] = str(output_path.with_suffix(''))
 
     return workflow
 

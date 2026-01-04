@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 漫剧生成控制台</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            padding: 14px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4);
+        }
+
+        .btn-info {
+            background: #2196F3;
+            color: white;
+        }
+
+        .btn-info:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(33, 150, 243, 0.4);
+        }
+
+        .btn-warning {
+            background: #FF9800;
+            color: white;
+        }
+
+        .btn-warning:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 152, 0, 0.4);
+        }
+
+        .btn-audio {
+            background: #9C27B0;
+            color: white;
+        }
+
+        .btn-audio:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(156, 39, 176, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .result.show {
+            display: block;
+        }
+
+        .result.success {
+            background: #e8f5e9;
+            border-left: 4px solid #4CAF50;
+        }
+
+        .result.error {
+            background: #ffebee;
+            border-left: 4px solid #f44336;
+        }
+
+        .result h3 {
+            margin-bottom: 15px;
+            color: #333;
+            font-size: 18px;
+        }
+
+        .result pre {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 13px;
+            line-height: 1.6;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-indicator.online {
+            background: #4CAF50;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+        }
+
+        .status-indicator.offline {
+            background: #f44336;
+        }
+
+        .api-status {
+            margin-bottom: 20px;
+            padding: 12px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎬 AI 漫剧生成控制台</h1>
+            <p>使用 ComfyUI 生成动画风格视频剧集</p>
+        </div>
+
+        <div class="content">
+            <div class="api-status" id="apiStatus">
+                <span class="status-indicator offline" id="statusIndicator"></span>
+                <span id="statusText">检查服务状态...</span>
+            </div>
+
+            <div class="form-group">
+                <label for="episodeId">Episode ID</label>
+                <input type="number" id="episodeId" placeholder="输入 Episode ID (例如: 1)" value="1" min="1">
+            </div>
+
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="renderFullEpisode()">
+                    🎬 完整渲染
+                </button>
+                <button class="btn btn-secondary" onclick="generateImages()">
+                    🖼️ 生成图片
+                </button>
+                <button class="btn btn-info" onclick="generateSRT()">
+                    📝 生成字幕
+                </button>
+                <button class="btn btn-audio" onclick="generateAudio()">
+                    🎤 生成配音
+                </button>
+                <button class="btn btn-warning" onclick="renderVideo()">
+                    🎥 渲染视频
+                </button>
+            </div>
+
+            <div class="loading" id="loading">
+                ⏳ 处理中，请稍候...
+            </div>
+
+            <div class="result" id="result">
+                <h3 id="resultTitle">结果</h3>
+                <pre id="resultContent"></pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = window.location.origin;
+        let currentEpisodeId = 1;
+
+        // 检查服务状态
+        async function checkHealth() {
+            try {
+                const response = await fetch(`${API_BASE}/health`);
+                const data = await response.json();
+                if (data.status === 'ok') {
+                    document.getElementById('statusIndicator').className = 'status-indicator online';
+                    document.getElementById('statusText').textContent = `服务在线 (版本: ${data.version})`;
+                } else {
+                    throw new Error('服务状态异常');
+                }
+            } catch (error) {
+                document.getElementById('statusIndicator').className = 'status-indicator offline';
+                document.getElementById('statusText').textContent = '服务离线';
+            }
+        }
+
+        // 显示结果
+        function showResult(data, isError = false) {
+            const resultDiv = document.getElementById('result');
+            const resultTitle = document.getElementById('resultTitle');
+            const resultContent = document.getElementById('resultContent');
+            
+            resultDiv.className = `result show ${isError ? 'error' : 'success'}`;
+            resultTitle.textContent = isError ? '❌ 错误' : '✅ 成功';
+            resultContent.textContent = JSON.stringify(data, null, 2);
+        }
+
+        // 显示加载状态
+        function setLoading(loading) {
+            document.getElementById('loading').className = loading ? 'loading show' : 'loading';
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(btn => btn.disabled = loading);
+        }
+
+        // 完整渲染
+        async function renderFullEpisode() {
+            const episodeId = parseInt(document.getElementById('episodeId').value);
+            if (!episodeId) {
+                alert('请输入 Episode ID');
+                return;
+            }
+
+            setLoading(true);
+            try {
+                const response = await fetch(`${API_BASE}/api/v1/episodes/render`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        episode_id: episodeId
+                    })
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    showResult(data);
+                } else {
+                    showResult(data, true);
+                }
+            } catch (error) {
+                showResult({ error: error.message }, true);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        // 生成图片
+        async function generateImages() {
+            const episodeId = parseInt(document.getElementById('episodeId').value);
+            if (!episodeId) {
+                alert('请输入 Episode ID');
+                return;
+            }
+
+            setLoading(true);
+            try {
+                const response = await fetch(`${API_BASE}/api/v1/episodes/${episodeId}/images`, {
+                    method: 'POST'
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    showResult(data);
+                } else {
+                    showResult(data, true);
+                }
+            } catch (error) {
+                showResult({ error: error.message }, true);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        // 生成字幕
+        async function generateSRT() {
+            const episodeId = parseInt(document.getElementById('episodeId').value);
+            if (!episodeId) {
+                alert('请输入 Episode ID');
+                return;
+            }
+
+            setLoading(true);
+            try {
+                const response = await fetch(`${API_BASE}/api/v1/episodes/${episodeId}/srt`, {
+                    method: 'POST'
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    showResult(data);
+                } else {
+                    showResult(data, true);
+                }
+            } catch (error) {
+                showResult({ error: error.message }, true);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        // 生成音频
+        async function generateAudio() {
+            const episodeId = parseInt(document.getElementById('episodeId').value);
+            if (!episodeId) {
+                alert('请输入 Episode ID');
+                return;
+            }
+
+            setLoading(true);
+            try {
+                const response = await fetch(`${API_BASE}/api/v1/episodes/${episodeId}/audio`, {
+                    method: 'POST'
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    showResult(data);
+                } else {
+                    showResult(data, true);
+                }
+            } catch (error) {
+                showResult({ error: error.message }, true);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        // 渲染视频
+        async function renderVideo() {
+            const episodeId = parseInt(document.getElementById('episodeId').value);
+            if (!episodeId) {
+                alert('请输入 Episode ID');
+                return;
+            }
+
+            setLoading(true);
+            try {
+                const response = await fetch(`${API_BASE}/api/v1/episodes/${episodeId}/video`, {
+                    method: 'POST'
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    showResult(data);
+                } else {
+                    showResult(data, true);
+                }
+            } catch (error) {
+                showResult({ error: error.message }, true);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        // 初始化
+        checkHealth();
+        setInterval(checkHealth, 30000); // 每30秒检查一次服务状态
+    </script>
+</body>
+</html>
+

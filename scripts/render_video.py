@@ -24,6 +24,7 @@ def render_video(images, durations, srt_path, output_path):
 
     cmd = [
         "ffmpeg",
+        "-y",  # 自动覆盖已存在的输出文件，不需要确认
         *inputs,
         "-filter_complex", filter_complex,
         "-r", "30",

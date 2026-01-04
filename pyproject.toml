@@ -5,6 +5,10 @@ description = "AI 漫剧生成项目"
 requires-python = ">=3.11.8"
 dependencies = [
     "requests>=2.31.0",
+    "fastapi>=0.104.0",
+    "uvicorn[standard]>=0.24.0",
+    "pydantic>=2.5.0",
+    "pyttsx3>=2.90",
 ]
 
 [build-system]
@@ -12,4 +16,5 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-packages = ["comfy", "scripts"]
+packages = ["comfy", "scripts", "services", "api"]
+package-dir = {"" = "."}

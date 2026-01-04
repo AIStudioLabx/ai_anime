@@ -1,0 +1,30 @@
+{
+  "default": {
+    "rate": 120,
+    "volume": 0.9,
+    "voice_name": "Ting-Ting"
+  },
+  "characters": {
+    "male_young": {
+      "rate": 130,
+      "volume": 0.9,
+      "voice_name": "Eddy (中文（中国大陆）)"
+    },
+    "male_mature": {
+      "rate": 110,
+      "volume": 0.85,
+      "voice_name": "Grandpa (中文（中国大陆）)"
+    },
+    "female_young": {
+      "rate": 140,
+      "volume": 0.9,
+      "voice_name": "Flo (中文（中国大陆）)"
+    },
+    "female_mature": {
+      "rate": 120,
+      "volume": 0.85,
+      "voice_name": "Grandma (中文（中国大陆）)"
+    }
+  }
+}
+
